@@ -22,7 +22,7 @@ module Furnace::SWF
     end
 
     def short_length=(value)
-      self.type_and_length = (type_and_length & 0xfffc) | (value & 0x3f)
+      self.type_and_length = (type << 6) | (value & 0x3f)
     end
 
     def real_length
@@ -56,6 +56,8 @@ module Furnace::SWF
       else
         @content  = io.readbytes(real_length)
       end
+
+      puts self.type_and_length, self.long_length
     end
 
     def do_write(io)
@@ -66,6 +68,8 @@ module Furnace::SWF
       else
         io.writebytes @content
       end
+
+      puts self.type_and_length, self.long_length
     end
 
     def do_num_bytes
